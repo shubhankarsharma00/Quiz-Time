@@ -1,0 +1,2 @@
+module AssigningHelper
+end
