@@ -1,0 +1,9 @@
+<ul>
+	<% if admin_signed_in? %>
+  <% @questions.each do |question| %>
+    <li><%= link_to question.statement, question_path(question.id)  %></li>
+  <% end %>
+   	<% else %>
+   	<h2><a href="<%= new_admin_session_path%>">               <i class="fa fa-sign-in"></i> Login as Admin </h2>
+  <% end %>
+</ul>

@@ -1,5 +1,5 @@
+<ul>
 	<% if admin_signed_in? %>
-	  <a href ="<%= new_assignment_url()%>"> New Assignment </a>
 	  <% if not @assignments.nil? %>
 		  <% @assignments.each do |assignment| %>
 		    <li>
@@ -14,3 +14,4 @@
    		<i class="fa fa-sign-in"></i> Login as Admin 
    	</h2>
   <% end %>
+</ul>

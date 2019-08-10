@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_07_135622) do
+ActiveRecord::Schema.define(version: 2019_08_08_094705) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -38,6 +38,7 @@ ActiveRecord::Schema.define(version: 2019_08_07_135622) do
 
   create_table "assignments", force: :cascade do |t|
     t.bigint "author_id"
+    t.string "topic"
     t.index ["author_id"], name: "index_assignments_on_author_id"
   end
 

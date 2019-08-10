@@ -1,4 +1,4 @@
-class Scorecards < ActiveRecord::Migration[5.2]
+class CreateScorecards < ActiveRecord::Migration[5.2]
   def change
     create_table :scorecards do |t|
       t.belongs_to :assignment, foreign_key: true
