@@ -1,1 +1,91 @@
-<h1>Welcome</h1>
+<% if admin_signed_in? %>
+<section class="jumbotron text-center">
+	<div class="container">
+		<h1 class="jumbotron-heading">Quiz Time</h1>
+		<p class="lead text-muted">The site will help us set some quizes </p>
+		<p>
+			<a href="<%= admin_path(current_admin.id) %>" class="btn btn-primary my-2"> My Assignments </a>
+			<a href="<%= new_assignment_url()%>" class="btn btn-secondary my-2">New Assignment</a>
+		</p>
+	</div>
+</section>
+<div class="album py-5 px-5 bg-light">
+	<div class="container">
+		<div class="row">
+			<%@assignments = Assignment.where(author_id: current_admin.id)%>
+			<% @assignments.each do |assignment|%>
+			<% @assignings = Assigning.where(assignment_id: assignment.id)%>
+			<div class="col-sm-4">
+				<div class="card mb-4 shadow-sm">
+					<div class="card-body">
+						<p class="card-text"><%= assignment.topic %></p>
+						<div class="d-flex justify-content-between align-items-center">
+							<div class="btn-group">
+								<button type="button" class="btn btn-sm btn-outline-secondary" onclick="location.href = '<%=assignment_path(assignment.id)%>'">View</button>
+								<button type="button" class="btn btn-sm btn-outline-secondary" onclick="location.href = '<%=edit_assignment_url(assignment.id)%>'">Edit</button>
+							</div>
+							<small class="text-muted"><%= @assignings.length%>Questions</small>
+						</div>
+					</div>
+				</div>
+			</div>
+			<% end %>
+		</div>
+	</div>
+</div>
+<% elsif student_signed_in? %>
+<section class="jumbotron text-center">
+	<div class="container">
+		<h1 class="jumbotron-heading">Quiz Time</h1>
+		<p class="lead text-muted">The site will help us set some quizes </p>
+		<p>
+			<a href="<%= student_path(current_student.id)%>" class="btn btn-primary my-2"> Give Assignment </a>
+			<a href="#" class="btn btn-secondary my-2">	<%= current_student.email %></a>
+		</p>
+	</div>
+</section>
+<div class="album py-5 px-5 bg-light">
+	<div class="container">
+		<div class="row">
+			<% @assignments = Assignment.all%>
+			<% if not @assignments.nil? %>
+			<% @assignments.each do |assignment| %>
+			<div class="col-sm-4">
+				<div class="card mb-4 shadow-sm">
+					<div class="card-body">
+						<p class="card-text"><%= assignment.topic %></p>
+						<div class="d-flex justify-content-between align-items-center">
+							<%if Scorecard.where(student_id: current_student.id, assignment_id: assignment.id ).first.nil? %>
+							<div class="btn-group">
+								<button type="button" class="btn btn-sm btn-outline-secondary" onclick="location.href = '<%=assignment_path(assignment.id)%>'">Take Test</button>
+							</div>
+							<% else %>
+							<div class="btn-group">
+								<% @scorecard = Scorecard.where(student_id: current_student.id, assignment_id: assignment.id).first %>
+								<button type="button" class="btn btn-sm btn-outline-secondary" onclick="location.href = '<%=assignment_path(assignment.id)%>'">Retest</button>
+							</div>
+							<small class="text-muted"><%=@scorecard.marks %> Marks</small>
+							<%end%>
+						</div>
+					</div>
+				</div>
+			</div>
+			<% end %>
+			<%end%>
+		</div>
+	</div>
+</div>
+<%else%>	
+<div class="container bg-light">
+	<section class="jumbotron text-center">
+		<div class="container">
+			<h1 class="jumbotron-heading">Quiz Time</h1>
+			<p class="lead text-muted">The site will help us set some quizes for both helping teachers as well as students simplify the process of test and quizes</p>
+			<p>
+				<a href="<%= new_student_session_path%>" class="btn btn-primary my-2"> Student </a>
+				<a href="<%= new_admin_session_path%>" class="btn btn-primary my-2">Teacher</a>
+			</p>
+		</div>
+	</section>
+</div>
+<%end%>

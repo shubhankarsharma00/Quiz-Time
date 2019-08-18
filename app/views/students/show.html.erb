@@ -1,1 +1,39 @@
-Welcome Student 
+<% if student_signed_in? %>
+<% @assignments = Assignment.all%>
+<% if not @assignments.nil? %>
+<% @assignments.each do |assignment| %>
+	<li class="list-group-item">
+		<div class="bg-light">
+			<div class="row">
+				<div class="col-sm-9">
+					<%= assignment.topic %>
+					<div class="row">
+						<%if Scorecard.where(student_id: current_student.id, assignment_id: assignment.id ).first.nil? %>
+						<div class="col-8 col-sm-6">
+						</div>
+						<div class="col-4 col-sm-6">
+							<a href = "<%= assignment_path(assignment.id)%>">Take Test</a>
+						</div>
+						<%else%>
+						<% @scorecard = Scorecard.where(student_id: current_student.id, assignment_id: assignment.id).first %>
+						<div class="col-8 col-sm-6">
+							Marks: <%= @scorecard.marks %>
+						</div>
+						<div class="col-4 col-sm-6">
+							<a href = "<%= assignment_path(assignment.id)%>">Retest</a>
+						</div>
+						<%end%>
+					</div>
+				</div>
+			</div>
+		</div>
+</li>
+<% end %>
+<% else %>
+<h2>Wow Such Empty</h2>
+<% end %>
+<% else %>
+<h2><a href="<%= new_admin_session_path%>">
+	<i class="fa fa-sign-in"></i> Login as Student 
+</h2>
+<% end %>

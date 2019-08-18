@@ -1,10 +1,8 @@
-
 <!DOCTYPE html>
 <html>
   <head>
     <title>Quiz Time</title>
     <%= csrf_meta_tags %>
-
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
@@ -14,7 +12,7 @@
     <nav class="navbar navbar-light bg-light d-flex">
       <div class="container">
         <div class="logo">
-          <a class="navbar-brand" href="#">
+          <a class="navbar-brand" href="/">
             <%= fa_stacked_icon "question", base: "circle_thin"%>
             Quiz Time
           </a>
@@ -25,14 +23,14 @@
               <i class="fa fa-user"></i>
             </a>
             <a href="<%= destroy_admin_session_path%>" data-method="delete">
-              Logout
+              <i class="fa fa-sign-out" aria-hidden="true"></i>
             </a>
           <% elsif student_signed_in? %>
             <a href="<%= student_path(current_student)%>" data-method="get">
               <i class="fa fa-user"></i>
             </a>
             <a href="<%= destroy_student_session_path%>" data-method="delete">
-              Logout
+              <i class="fa fa-sign-out" aria-hidden="true"></i>
             </a>
           <% else %>
             <a href="<%= new_student_session_path%>">

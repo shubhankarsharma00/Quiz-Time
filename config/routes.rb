@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   resources :questions
+  resources :scorecards
   resources :assignments
   resources :assignings
   devise_for :students

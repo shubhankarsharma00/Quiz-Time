@@ -1,19 +1,59 @@
+<% if admin_signed_in? %>
 <% if not @assignings.first.nil? %>
-	<%= Admin.find(@assignment.author_id).email%>
-	<% @assignings.each do |assigning| %>
-		<h1><%= assigning.question.statement %></h1>
-		<h4><%= assigning.question.answer %></h4>
-		<%= link_to "Remove", assigning_path(id: assigning.id,assignment_id: @assignment.id), :method => :delete %>
-	<% end %>
-<% else %><h2>Empty Hai</h2>
-<% end %>
-<h2>Add Question</h2>
-<ul>
-	<% Question.all.each do |question| %>
-		<li>
-			<%= link_to question.statement, question_path(question.id) %>
-			<a href ="<%= new_assigning_url(assignment_id: @assignment.id,question_id: question.id)%>"> Add question </a>
-		</li>
+Made by: <%= Admin.find(@assignment.author_id).email%>
+<% @assignings.each do |assigning| %>
+<li class="list-group-item"><%= assigning.question.statement %> ?<span class="badge badge-secondary badge-pill mx-5"><%=assigning.question.answer %></span>
+	<%= link_to '<i class="fa fa-minus" aria-hidden="true"></i>
+	'.html_safe, assigning_path(id: assigning.id,assignment_id: @assignment.id), :method => :delete %><br>
+	<div class="row-xl px-1">
+	<div class="col-sm px-1">
+	A: <%= assigning.question.A%>
+</div>
+	<div class="col-sm px-1">
+	B: <%= assigning.question.B%>
+</div>
+	<div class="col-sm px-1">
+	C: <%= assigning.question.C%>
+</div>
+</div>
+</li>
 	<% end %>
 </ul>
-<a href ="<%= new_question_url(assignment_id: @assignment.id)%>"> Add a custom question </a>
+<% else %><h2>Oops So Empty!!</h2>
+<% end %>
+<h2 class="my-4" style="font-family: Courier New;">Add Question : </h2>
+<ul class="list-group my-5">
+	<% Question.all.each do |question| %>
+	<% @assigning = @assignings.find_by(question_id: question.id)%>
+	<% if @assigning.nil? %>
+	<li class="list-group-item">
+		<%= link_to question.statement, question_path(question.id) %>
+		<a href ="<%= new_assigning_url(assignment_id: @assignment.id,question_id: question.id)%>" class="mx-4"> <i class="fa fa-plus" aria-hidden="true"></i>
+		</a> 
+		<%= link_to 'Remove', question_path(id: question.id,assignment_id: @assignment.id), :method => :delete %>
+	</li>
+	<% end %>
+	<% end %>
+</ul>
+<a href ="<%= new_question_url(assignment_id: @assignment.id)%>" class="btn btn-secondary"> Add a custom question </a>
+<%elsif student_signed_in?%>
+<% if not @assignings.first.nil? %>
+<%= Admin.find(@assignment.author_id).email%>
+<%= form_tag(new_scorecard_url, method: "get")%>
+<% @assignings.each do |assigning| %>
+<h1><%= assigning.question.statement %></h1>
+<% assigning_id = assigning.id %>
+<%= radio_button_tag(assigning_id, "A") %>
+<%= label_tag(:A, assigning.question.A) %>
+<%= radio_button_tag(assigning_id, "B") %>
+<%= label_tag(:B, assigning.question.B) %>
+<%= radio_button_tag(assigning_id, "C") %>
+<%= label_tag(:C, assigning.question.C) %>
+<%= hidden_field_tag(:id,value = @assignment.id) %>
+<% params.merge(:id => @assignment.id) %>
+<% end %>
+<br>
+<br>
+<input class= "btn btn-primary"name="commit" type="submit" value="Submit" data-disable-with="Submit" /><% else %><h2>Empty Hai</h2>
+<% end %>
+<% end %>

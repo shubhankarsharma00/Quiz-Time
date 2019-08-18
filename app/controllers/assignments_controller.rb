@@ -22,6 +22,10 @@ class AssignmentsController < ApplicationController
   end
   def destroy
     @assignment = Assignment.find(params[:id])
+    @scorecards = Scorecard.where(assignment_id: @assignment.id)
+    for scorecard in @scorecards
+      scorecard.destroy
+    end
     @assignment.destroy
     redirect_to assignments_path  
   end

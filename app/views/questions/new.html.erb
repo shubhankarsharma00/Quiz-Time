@@ -1,5 +1,9 @@
 <%= form_for @question do |f| %>
   <%= f.text_field :statement, placeholder: "question" %>
+  <%= f.text_field :A, placeholder: "A" %>
+  <%= f.text_field :B, placeholder: "B" %>
+  <%= f.text_field :C, placeholder: "C" %>
   <%= f.text_field :answer, placeholder: "answer" %>
+  <%= f.hidden_field :assignment_id, :value => params[:assignment_id] %>
   <%= f.submit %>
 <% end %>
